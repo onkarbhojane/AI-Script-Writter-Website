@@ -1,18 +1,34 @@
 // backend/src/controllers/scriptController.js
 import Script from "../models/Script.js";
+import { main } from "../utils/ScriptWritter.js";
 
-// Generate script via LangChain (backend handles AI call)
+// Generate script via ScriptWriter utility
 export const generateScript = async (req, res) => {
   try {
     const { prompt } = req.body;
-    if (!prompt) return res.status(400).json({ message: "Prompt is required" });
+    if (!prompt) {
+      return res.status(400).json({ message: "Prompt is required" });
+    }
 
-    // TODO: Replace with LangChain.js AI call
-    const generatedScript = `AI generated script for: ${prompt}`;
+    console.log("🎬 Generating script for prompt:", prompt);
 
-    res.json({ script: generatedScript });
+    // Wait for the final storyDB from ScriptWriter
+    const storyDB = await main(prompt);
+    console.log(storyDB);
+    // Build final script text (same as in main())
+    // let finalScript = `TITLE: ${storyDB.title}\n\n`;
+    // storyDB.content.forEach((scene) => {
+    //   finalScript += `${scene}\n\n=== SCENE END ===\n\n`;
+    // });
+    console.log(storyDB);
+
+    // Send back to frontend
+    return res.json({
+      script: storyDB
+    });
+
   } catch (err) {
-    console.error(err);
+    console.error("❌ Error generating script:", err);
     res.status(500).json({ message: "Failed to generate script" });
   }
 };
@@ -44,4 +60,3 @@ export const getMyScripts = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch scripts" });
   }
 };
-

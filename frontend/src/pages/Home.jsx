@@ -1,8 +1,8 @@
 // src/pages/Home.jsx
-import React from "react";
+import React, { use } from "react";
 import { Link } from "react-router-dom";
 import { FiEdit, FiFileText, FiDownload } from "react-icons/fi";
-
+import { AuthContext } from "../context/AuthContext";
 const Home = () => {
   return (
     <div className="min-h-screen flex flex-col">

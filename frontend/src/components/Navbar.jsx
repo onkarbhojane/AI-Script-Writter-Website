@@ -1,11 +1,11 @@
 // src/components/Navbar.jsx
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { FiUser, FiLogOut, FiFileText, FiEdit } from "react-icons/fi"; // optional icons
-import useAuth from "../hooks/useAuth";
+import { FiUser, FiLogOut, FiFileText, FiEdit } from "react-icons/fi";
+import { AuthContext } from "../context/AuthContext.jsx"; // use global context
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <nav className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-4 px-6 shadow-lg flex justify-between items-center">
@@ -15,6 +15,7 @@ const Navbar = () => {
       >
         AI Script Writer
       </Link>
+
       <div className="flex items-center gap-4">
         {user ? (
           <>
@@ -44,9 +45,9 @@ const Navbar = () => {
           <>
             <Link
               to="/login"
-              className="px-3 py-2 rounded hover:bg-indigo-700 transition-colors duration-200"
+              className="px-3 py-2 rounded hover:bg-indigo-700 transition-colors duration-200 flex items-center gap-1"
             >
-              <FiUser className="inline mr-1" />
+              <FiUser />
               Login
             </Link>
             <Link
